@@ -62,6 +62,17 @@ def plot_graph(G):
     nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
     plt.show()
 
+def heaviest_edges(graph, n=10):
+
+    edges_with_weights = [(source, target, graph[source][target]['weight'])
+                          for source, target in graph.edges()]
+
+    # Sort edges based on weight in descending order
+    sorted_edges = sorted(edges_with_weights, key=lambda x: x[2], reverse=True)
+
+    # Return the top n heaviest edges
+    return sorted_edges[:n]
+
 def main():
     airports = load_airports('airports.dat')
     routes = load_routes('routes.dat')
@@ -81,8 +92,10 @@ def main():
     # print(f"Average out-degree: {sum(dict(flight_graph.out_degree()).values()) / flight_graph.number_of_nodes()}")
     # print(f"Diameter: {nx.diameter(flight_graph)}")
 
+    print(heaviest_edges(flight_graph))
+
     # Plot the graph
-    plot_graph(flight_graph)
+    # plot_graph(flight_graph)
 
 if __name__ == "__main__":
     main()
